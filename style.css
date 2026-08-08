@@ -55,12 +55,15 @@ h1, h2, h3 {
 }
 
 .logo {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: var(--gold-bright);
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  letter-spacing: 0.04em;
+}
+
+.logo-img {
+  height: 64px;
+  width: auto;
+  display: block;
 }
 
 .site-header nav a {
@@ -430,6 +433,7 @@ h1, h2, h3 {
 
 @media (max-width: 640px) {
   .site-header nav a:not(.btn-call) { display: none; }
+  .logo-img { height: 44px; }
   .fit .two-col { grid-template-columns: 1fr; }
   .h1-stack span, .h1-stack h1 { font-size: 1.7rem; }
   .h1-blue { -webkit-text-stroke: 4px #4a90d9; text-stroke: 4px #4a90d9; }
