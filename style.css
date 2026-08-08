@@ -93,6 +93,8 @@ h1, h2, h3 {
 }
 
 .hero {
+  position: relative;
+  overflow: hidden;
   background:
     radial-gradient(ellipse at center, rgba(201, 169, 97, 0.08) 0%, rgba(10, 10, 10, 0) 60%),
     var(--black);
@@ -428,4 +430,132 @@ h1, h2, h3 {
   .tile-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 0; }
   .tile:not(:first-child) { border-left: none; }
   .tile { padding: 0 12px; }
+}
+
+/* ================= SOAPY WATER + SQUEEGEE EFFECT (v2 — organic SVG) ================= */
+
+.wash-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  clip-path: inset(0% 0 0 0);
+  animation: reveal 10s cubic-bezier(.61,.06,.4,.95) infinite;
+}
+
+/* faint wet-film sheen underneath the streaks */
+.wash-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 35%, rgba(255,255,255,.05) 100%);
+  mix-blend-mode: screen;
+  filter: url(#waterDistort);
+}
+
+.water-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bubgrp {
+  animation: drift var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes drift {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(var(--dx, 4px), -6px); }
+  100% { transform: translate(0, 0); }
+}
+
+.bub-fill {
+  fill: url(#bubGrad);
+  mix-blend-mode: screen;
+}
+.bub-rim {
+  fill: none;
+  stroke: #f4faff;
+  stroke-width: 1;
+  mix-blend-mode: screen;
+  animation: rimPulse var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+}
+.bub-hl {
+  fill: #ffffff;
+  mix-blend-mode: screen;
+}
+
+@keyframes rimPulse {
+  0%, 100% { opacity: .28; }
+  50%      { opacity: .55; }
+}
+
+/* ---- the squeegee blade ---- */
+.squeegee {
+  position: absolute;
+  top: -4%;
+  bottom: -4%;
+  z-index: 50;
+  width: 46px;
+  left: -8%;
+  pointer-events: none;
+  animation: wipe 10s cubic-bezier(.61,.06,.4,.95) infinite;
+  transform: rotate(1deg);
+}
+.blade {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #3a3a3a 0%, #1a1a1a 55%, #050505 100%);
+  box-shadow:
+    10px 0 22px rgba(0,0,0,.55),
+    inset 2px 0 0 rgba(255,255,255,.18),
+    inset -2px 0 0 rgba(0,0,0,.6);
+}
+.blade::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; right: -3px;
+  width: 5px;
+  background: linear-gradient(90deg, rgba(255,255,255,.5), rgba(255,255,255,0));
+  border-radius: 0 4px 4px 0;
+  opacity: .5;
+}
+.handle {
+  position: absolute;
+  top: 50%;
+  left: -34px;
+  width: 42px;
+  height: 14px;
+  transform: translateY(-50%);
+  background: linear-gradient(180deg, #6b4a2e, #8a6238 45%, #6b4a2e);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,.5);
+}
+
+.trail {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 100%;
+  width: 26px;
+  background: linear-gradient(90deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+  filter: blur(2px);
+}
+
+@keyframes wipe {
+  0%   { left: -8%; }
+  10%  { left: -8%; }
+  72%  { left: 104%; }
+  100% { left: 104%; }
+}
+
+@keyframes reveal {
+  0%   { clip-path: inset(0 0 0 0%); opacity: 1; }
+  10%  { clip-path: inset(0 0 0 0%); opacity: 1; }
+  72%  { clip-path: inset(0 0 0 104%); opacity: 1; }
+  86%  { clip-path: inset(0 0 0 104%); opacity: 0; }
+  87%  { clip-path: inset(0 0 0 0%); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0%); opacity: 1; }
 }
